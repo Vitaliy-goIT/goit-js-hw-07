@@ -28,9 +28,13 @@ function createGalleryEl(pictures) {
     }).join('');
 };
 
-function onGalleryElClick (evt) {
-    // console.log(evt.target);
+function onGalleryElClick(evt) {
+    evt.preventDefault();
+    console.log(evt.target);
     if (!evt.target.classList.contains('gallery__image')) {
         return;
     }
+
+    const bigImgUrl = evt.target.dataset.source;
+    console.log(bigImgUrl);
 }
