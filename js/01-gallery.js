@@ -3,7 +3,7 @@ import { galleryItems } from './gallery-items.js';
 
 // console.log(galleryItems);
 
-console.log(createGalleryEl(galleryItems));
+// console.log(createGalleryEl(galleryItems));
 
 const galleryContainer = document.querySelector('.gallery');
 const galleryEl = createGalleryEl(galleryItems);
@@ -30,11 +30,23 @@ function createGalleryEl(pictures) {
 
 function onGalleryElClick(evt) {
     evt.preventDefault();
-    console.log(evt.target);
     if (!evt.target.classList.contains('gallery__image')) {
         return;
     }
 
     const bigImgUrl = evt.target.dataset.source;
-    console.log(bigImgUrl);
+    const instance = basicLightbox.create(`
+    <img src="${bigImgUrl}" width="800" height="600">`)
+
+    instance.show();
+
+    if (instance.show() === true) {
+        document.addEventListener('keydown', () => {
+            instance.close();
+        })
+    } else {
+        document.removeEventListener('keydown', () => {
+            instance.close()
+        })
+    }
 }
