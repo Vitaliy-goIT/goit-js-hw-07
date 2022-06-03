@@ -13,8 +13,9 @@ galleryContainer.insertAdjacentHTML('beforeend', galleryEl);
 galleryContainer.addEventListener('click', onGalleryElClick);
 
 function createGalleryEl(pictures) {
-    return pictures.map(({ preview, original, description }) => {
-        return `
+  return pictures
+    .map(({ preview, original, description }) => {
+      return `
         <div class="gallery__item">
         <a class="gallery__link" href="${original}">
             <img
@@ -25,28 +26,33 @@ function createGalleryEl(pictures) {
             />
         </a>
         </div>`;
-    }).join('');
-};
+    })
+    .join('');
+}
 
 function onGalleryElClick(evt) {
-    evt.preventDefault();
-    if (!evt.target.classList.contains('gallery__image')) {
-        return;
-    }
+  evt.preventDefault();
+  if (!evt.target.classList.contains('gallery__image')) {
+    return;
+  }
 
-    const bigImgUrl = evt.target.dataset.source;
-    const instance = basicLightbox.create(`
-    <img src="${bigImgUrl}" width="800" height="600">`)
+  const bigImgUrl = evt.target.dataset.source;
+  const instance = basicLightbox.create(`
+    <img src="${bigImgUrl}" width="800" height="600">`);
 
-    instance.show();
+  instance.show();
 
-    if (instance.show() === true) {
-        document.addEventListener('keydown', () => {
-            instance.close();
-        })
-    } else {
-        document.removeEventListener('keydown', () => {
-            instance.close()
-        })
-    }
+  if (instance.show() === true) {
+    document.addEventListener('keydown', event => {
+      if (event.code === 'Escape') {
+        instance.close();
+      }
+    });
+  } else {
+    document.removeEventListener('keydown', event => {
+      if (event.code === 'Escape') {
+        instance.close();
+      }
+    });
+  }
 }
